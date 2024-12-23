@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Manager extends Staff {
+public class Manager extends staff {
     private ArrayList<Librarian> librarians = new ArrayList<>();
 
     public void addLibrarian(Librarian librarian) {

@@ -1,8 +1,10 @@
- class Library {
+import java.util.List;
+
+class Library {
     private int libraryId;
     private String libraryName;
-    private List<Customer> members;
-    private List<Transaction> transactions;
+    private List<customar> members;
+    private List<transaction> transactions;
     private int managerId;
     private String address;
 
@@ -23,19 +25,19 @@
         this.libraryName = libraryName;
     }
 
-    public List<Member> getMembers() {
+    public List<customar> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Customer> members) {
+    public void setMembers(List<customar> members) {
         this.members = members;
     }
 
-    public List<Transaction> getTransactions() {
+    public List<transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<Customer> transactions) {
+    public void setTransactions(List<transaction> transactions) {
         this.transactions = transactions;
     }
 
