@@ -1,62 +1,24 @@
-import java.util.List;
+import classes.*;
+public class main {
+    public static void main(String[] args) {
+        String url = "jdbc:postgresql://silly.db.elephantsql.com/doxddjal?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+        String user = "doxddjal";
+        String password = "vIdZ-8U8edd2hoCiN1J-Oj-qqdA-OyqR";
 
-class Library {
-    private int libraryId;
-    private String libraryName;
-    private List<customar> members;
-    private List<transaction> transactions;
-    private int managerId;
-    private String address;
+        DataBaseConnection.DatabaseManager dbManager = new DataBaseConnection.DatabaseManager(url, user, password);
 
+        if (dbManager.getConnection() != null) {
+            LibraryItem item = new LibraryItem();
+            item.setTitle("Effective Java");
+            item.setPublisher("Addison-Wesley");
+            item.setIsbn("978-0134685991");
+            item.setAuthor("Joshua Bloch");
+            item.setNumberOfCopies(5);
 
-    public int getLibraryId() {
-        return libraryId;
-    }
-
-    public void setLibraryId(int libraryId) {
-        this.libraryId = libraryId;
-    }
-
-    public String getLibraryName() {
-        return libraryName;
-    }
-
-    public void setLibraryName(String libraryName) {
-        this.libraryName = libraryName;
-    }
-
-    public List<customar> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<customar> members) {
-        this.members = members;
-    }
-
-    public List<transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    public int getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(int managerId) {
-        this.managerId = managerId;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+            dbManager.insertLibraryItem("Effective Java", "Addison-Wesley", "978-0134685991", "Joshua Bloch", 5);
+            dbManager.closeConnection();
+        } else {
+            System.out.println("Database connection could not be established.");
+        }
     }
 }
-
-
-

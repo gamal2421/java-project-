@@ -1,3 +1,5 @@
+package classes;
+
 abstract class person {
     String password ;
     int id;

@@ -1,3 +1,5 @@
+package classes;
+
 public class LibraryItem {
     private int id;
     private String title;
