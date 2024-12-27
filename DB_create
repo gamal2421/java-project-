@@ -13,7 +13,6 @@ CREATE TABLE Libraries (
     library_address VARCHAR2(255)
 );
 
-
 -- Creating LibraryItems Table
 CREATE TABLE LibraryItems (
     item_id NUMBER PRIMARY KEY,
