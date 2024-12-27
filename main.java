@@ -8,6 +8,8 @@ public class main {
         DataBaseConnection.DatabaseManager dbManager = new DataBaseConnection.DatabaseManager(url, user, password);
 
         if (dbManager.getConnection() != null) {
+            dbManager.select_library();
+            dbManager.insertLibrary(1,"batoot lib","elshouruq city");
             LibraryItem item = new LibraryItem();
             item.setTitle("Effective Java");
             item.setPublisher("Addison-Wesley");
@@ -15,7 +17,8 @@ public class main {
             item.setAuthor("Joshua Bloch");
             item.setNumberOfCopies(5);
 
-            dbManager.insertLibraryItem("Effective Java", "Addison-Wesley", "978-0134685991", "Joshua Bloch", 5);
+
+
             dbManager.closeConnection();
         } else {
             System.out.println("Database connection could not be established.");
