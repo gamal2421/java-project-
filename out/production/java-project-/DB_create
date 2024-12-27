@@ -1,0 +1,79 @@
+
+DROP TABLE Libraries CASCADE CONSTRAINTS;
+DROP TABLE LibraryItems CASCADE CONSTRAINTS;
+DROP TABLE CUSTOMERS CASCADE CONSTRAINTS;
+DROP TABLE lib_Trans CASCADE CONSTRAINTS;
+DROP TABLE lib_emp CASCADE CONSTRAINTS;
+
+
+-- Creating Library Table
+CREATE TABLE Libraries (
+    library_id NUMBER PRIMARY KEY,
+    library_name VARCHAR2(55),
+    library_address VARCHAR2(255)
+);
+
+
+-- Creating LibraryItems Table
+CREATE TABLE LibraryItems (
+    item_id NUMBER PRIMARY KEY,
+    item_type VARCHAR2(50),
+    item_title VARCHAR2(50),
+    publisher VARCHAR2(100),
+    isbn VARCHAR2(100),
+    author VARCHAR2(50),
+    number_of_copies NUMBER,
+    status varchar2(1),
+    library_id number,
+    FOREIGN KEY (library_id) REFERENCES Libraries(library_id)
+);
+
+-- Creating Customer Table
+CREATE TABLE Customers (
+    customer_id NUMBER PRIMARY KEY,
+    customer_name VARCHAR2(50),
+    email VARCHAR2(100)unique,
+    phone VARCHAR2(50) unique,
+    customer_password VARCHAR2(50) ,
+    member_ship_date DATE,
+    expire_date DATE,
+    library_id number ,
+    FOREIGN KEY (library_id) REFERENCES Libraries(library_id)
+);
+
+-- Creating Transactions Table
+CREATE TABLE lib_Trans (
+    transaction_id NUMBER PRIMARY KEY,
+    customer_id NUMBER,
+    item_id NUMBER,
+    transaction_type VARCHAR2(50),
+    start_date DATE,
+    end_date DATE,
+    pending_days number ,
+    status varchar2(50),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (item_id) REFERENCES LibraryItems(item_id)
+);
+
+
+-- Creating Staff Table
+CREATE TABLE lib_emp (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    email VARCHAR2(100)unique,
+    phone VARCHAR2(50) unique,
+    acc_password VARCHAR2(50) ,
+    salary number,
+    hire_date DATE,
+    manager_id number,
+    library_id number ,
+    FOREIGN KEY (library_id) REFERENCES Libraries(library_id),
+    FOREIGN KEY (manager_id) REFERENCES lib_emp(emp_id)
+);
+
+select * from lib_emp;
+select * from lib_Trans;
+select * from Customers;
+select * from libraries;
+
+
