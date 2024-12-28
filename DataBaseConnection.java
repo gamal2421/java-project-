@@ -187,10 +187,9 @@ public class DataBaseConnection {
         }
         //////////////////////////
 
-
         /////////////_________select  library_________//////////////
 
-        public void select_library(){
+        public void select_libraryItem(){
             if (this.connection == null){
                 System.out.println("can not select ");
             }
@@ -208,6 +207,88 @@ public class DataBaseConnection {
 
             } catch (SQLException e) {
                 System.out.println("Error select library item: " + e.getMessage());
+            }
+        };
+        /////////////_________select  library_________//////////////
+
+        public void select_library(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from Libraries";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the Library table has columns "id", "name", "address", etc.
+                    int id = resultSet.getInt("library_id");
+                    String name = resultSet.getString("library_name");
+                    String address = resultSet.getString("library_address");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", Address: " + address);
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library : " + e.getMessage());
+            }
+        };
+
+        /////////////_________select  Customers_________//////////////
+
+        public void select_Customers(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from Customers";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the customers table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("customer_id");
+                    String name = resultSet.getString("customer_name");
+                    String email = resultSet.getString("email");
+                    String phone = resultSet.getString("phone");
+                    String pass = resultSet.getString("customer_password");
+                    String member_ship_date = resultSet.getString("member_ship_date");
+                    String expire_date = resultSet.getString("expire_date");
+                    int lib_id = resultSet.getInt("library_id");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", email: " + email+ ", phone: " + phone);
+                    System.out.println("password: " + pass + ", member_ship_date: " + member_ship_date + ", expire_date: " + expire_date+ ", lib_id: " + lib_id);
+
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library item: " + e.getMessage());
+            }
+
+        };
+
+        /////////////_________select  Transactions_________//////////////
+        public void select_Transactions(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from Transactions";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the customers table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("transaction_id");
+                    int customer_id = resultSet.getInt("customer_id");
+                    int itemId = resultSet.getInt("item_id");
+                    String trans_type = resultSet.getString("transaction_type");
+                    Date start_date = resultSet.getDate("start_date");
+                    Date end_date = resultSet.getDate("end_date");
+                    String status = resultSet.getString("status");
+                    int pending_days = resultSet.getInt("pending_days");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", customer: " + customer_id + ", itemId: " + itemId+ ", transaction_type: " + trans_type);
+                    System.out.println("start_date: " + start_date + ", end_date: " + end_date + ", pending days: " + pending_days+ ", status: " + status);
+
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select Transactions: " + e.getMessage());
             }
 
         };
