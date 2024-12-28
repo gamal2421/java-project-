@@ -189,7 +189,7 @@ public class DataBaseConnection {
         }
         //////////////////////////
 
-        /////////////_________select  library_________//////////////
+        /////////////_________select  libraryItem _________//////////////
 
         public void select_libraryItem(){
             if (this.connection == null){
@@ -250,12 +250,43 @@ public class DataBaseConnection {
                     String email = resultSet.getString("email");
                     String phone = resultSet.getString("phone");
                     String pass = resultSet.getString("customer_password");
-                    String member_ship_date = resultSet.getString("member_ship_date");
-                    String expire_date = resultSet.getString("expire_date");
+                    Date member_ship_date = resultSet.getDate("member_ship_date");
+                    Date expire_date = resultSet.getDate("expire_date");
                     int lib_id = resultSet.getInt("library_id");
                     // Print or process the data
                     System.out.println("ID: " + id + ", Name: " + name + ", email: " + email+ ", phone: " + phone);
                     System.out.println("password: " + pass + ", member_ship_date: " + member_ship_date + ", expire_date: " + expire_date+ ", lib_id: " + lib_id);
+
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library item: " + e.getMessage());
+            }
+
+        };
+
+        public void select_employees(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from lib_emp";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the employees table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("emp_id");
+                    String name = resultSet.getString("emp_name");
+                    String email = resultSet.getString("email");
+                    String phone = resultSet.getString("phone");
+                    String pass = resultSet.getString("acc_password");
+                    int salary = resultSet.getInt("salary");
+                    Date hire_date = resultSet.getDate("hire_date");
+                    int manager_id = resultSet.getInt("manager_id");
+                    int lib_id = resultSet.getInt("library_id");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", email: " + email+ ", phone: " + phone);
+                    System.out.println("password: " + pass + ", salary: " + salary + ", hire_date: " + hire_date+
+                            ", lib_id: " + lib_id+"manager_id: "+manager_id);
 
                 }
 
@@ -274,7 +305,7 @@ public class DataBaseConnection {
             try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
-                    // Assuming the customers table has columns "id", "name", "email", etc.
+                    // Assuming the transactions table has columns "id", "name", "email", etc.
                     int id = resultSet.getInt("transaction_id");
                     int customer_id = resultSet.getInt("customer_id");
                     int itemId = resultSet.getInt("item_id");
@@ -286,13 +317,10 @@ public class DataBaseConnection {
                     // Print or process the data
                     System.out.println("ID: " + id + ", customer: " + customer_id + ", itemId: " + itemId+ ", transaction_type: " + trans_type);
                     System.out.println("start_date: " + start_date + ", end_date: " + end_date + ", pending days: " + pending_days+ ", status: " + status);
-
                 }
-
             } catch (SQLException e) {
                 System.out.println("Error select Transactions: " + e.getMessage());
             }
-
         };
 
     }
