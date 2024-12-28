@@ -1,0 +1,14 @@
+Index: DataBaseConnection.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>public class DataBaseConnection {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/DataBaseConnection.java b/DataBaseConnection.java
+--- a/DataBaseConnection.java	(revision 5fc6258198ce525541736c279e57f3c2a2af34f9)
++++ b/DataBaseConnection.java	(date 1734947533591)
+@@ -1,2 +1,3 @@
++
+ public class DataBaseConnection {
+ }
