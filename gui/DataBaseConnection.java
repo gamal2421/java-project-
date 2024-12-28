@@ -165,10 +165,10 @@ public class DataBaseConnection {
                 Date start_date , Date end_date , int pending_days , String status
         ){
             if (this.connection == null) {
-                System.out.println("Cannot insert library item: Connection is null.");
+                System.out.println("Cannot insert Transaction: Connection is null.");
                 return;
             }
-            String sql= "insert into Transactions values(?,?,?,?,?,?,?,?)";
+            String sql= "insert into lib_Trans values(?,?,?,?,?,?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)){
                 statement.setInt(1,transaction_id);
                 statement.setInt(2,customer_id);
@@ -189,6 +189,69 @@ public class DataBaseConnection {
         }
         //////////////////////////
 
+        ///////////___________delete Library Customer____________////////////////
+        public void deleteCustomer(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library employee: Connection is null.");
+                return;
+            }
+            String sql= "delete from Customers where customer_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                    System.out.println("Customer deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting customer: " + e.getMessage());
+            }
+        }
+
+        ///////////___________delete Library Item__________////////////////
+        public void deleteLibItem(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library item: Connection is null.");
+                return;
+            }
+            String sql= "delete from libraryItem where item_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                System.out.println("item deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting item: " + e.getMessage());
+            }
+        }
+        //////////////_________delete Employee________/////////////
+
+        public void deleteLib_emp(int emp_id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library employee: Connection is null.");
+                return;
+            }
+            String sql= "delete from lib_emp where emp_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,emp_id);
+                statement.executeUpdate();
+                System.out.println("Employee deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting libEmp: " + e.getMessage());
+            }
+        }
+
+        ///////////___________delete Library Item__________////////////////
+        public void deleteTrans(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library item: Connection is null.");
+                return;
+            }
+            String sql= "delete from lib_Trans where transaction_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                System.out.println("transaction deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting transaction: " + e.getMessage());
+            }
+        }
         /////////////_________select  libraryItem _________//////////////
 
         public void select_libraryItem(){
@@ -264,6 +327,7 @@ public class DataBaseConnection {
             }
 
         };
+        /////////////_________select  employees_________//////////////
 
         public void select_employees(){
             if (this.connection == null){
@@ -301,7 +365,7 @@ public class DataBaseConnection {
             if (this.connection == null){
                 System.out.println("can not select ");
             }
-            String select_sql = "select * from Transactions";
+            String select_sql = "select * from lib_Trans";
             try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
