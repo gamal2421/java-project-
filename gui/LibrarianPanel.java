@@ -1,5 +1,4 @@
 package gui;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class LibrarianPanel extends JFrame {
+
     private Connection connection;
     private JButton btnAddBook, btnDeleteBook, btnViewBooks, btnManageCustomers, btnAddCustomer, btnDeleteCustomer;
     private JList<String> listBooks, listCustomers;
@@ -137,10 +137,10 @@ public class LibrarianPanel extends JFrame {
             String isbn = isbnField.getText();
             String author = authorField.getText();
             String numberOfCopies = copiesField.getText();
-            String status = statusField.getText();
+
 
             if (!title.isEmpty() && !type.isEmpty() && !publisher.isEmpty() && !isbn.isEmpty() &&
-                    !author.isEmpty() && !numberOfCopies.isEmpty() && !status.isEmpty()) {
+                    !author.isEmpty() && !numberOfCopies.isEmpty()) {
 
                 try {
                     String sql = "INSERT INTO LibraryItems (item_type, item_title, publisher, isbn, author, number_of_copies, status) " +
