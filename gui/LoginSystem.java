@@ -1,4 +1,5 @@
-import gui.DataBaseConnection;
+package gui;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +18,7 @@ public class LoginSystem {
                 "doxddjal", "vIdZ-8U8edd2hoCiN1J-Oj-qqdA-OyqR"
         );
         connection = dbManager.getConnection();
-        //  johndoe@example.com
-        //  password123
+
         // Create the login frame
         JFrame frame = new JFrame("Library Management System - Login");
         frame.setSize(400, 300);
@@ -53,22 +53,35 @@ public class LoginSystem {
         frame.setVisible(true);
     }
     private static void authenticateUser(String email, String password, JLabel lblMessage) {
-        String sql = "SELECT customer_id, 'customer' AS role FROM Customers WHERE email = ? AND customer_password = ? " +
-                "UNION " +
-                "SELECT emp_id, 'librarian' AS role FROM lib_emp WHERE email = ? AND acc_password = ?";
+        String sql =
+                "SELECT customer_id AS emp_id, 'customer' AS role FROM Customers WHERE email = ? AND customer_password = ? " +
+                        "UNION " +
+                        "SELECT emp_id, 'librarian' AS role FROM lib_emp WHERE email = ? AND acc_password = ? AND manager_id IS NOT NULL " +
+                        "UNION " +
+                        "SELECT emp_id, 'manager' AS role FROM lib_emp WHERE email = ? AND acc_password = ? AND manager_id IS NULL";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, email);
             statement.setString(2, password);
             statement.setString(3, email);
             statement.setString(4, password);
+            statement.setString(5, email);
+            statement.setString(6, password);
 
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 String role = rs.getString("role");
-                lblMessage.setText("Login successful as " + role);
-                int userId = rs.getInt(1);
+                int userId = rs.getInt("emp_id"); // Access the emp_id column
 
+                // For managers, we need to fetch the manager's ID
+                int managerId = -1;
+                if ("manager".equals(role)) {
+                    managerId = userId;  // Assuming the manager's ID is the same as the emp_id in the lib_emp table
+                }
+
+                lblMessage.setText("Login successful as " + role);
+
+                // Based on the role, open the appropriate dashboard
                 switch (role) {
                     case "customer":
                         openCustomerDashboard(userId);
@@ -77,7 +90,7 @@ public class LoginSystem {
                         openLibrarianDashboard();
                         break;
                     case "manager":
-                        openManagerDashboard();
+                        openManagerDashboard(managerId);  // Pass the managerId to the constructor
                         break;
                 }
             } else {
@@ -94,14 +107,16 @@ public class LoginSystem {
         });
     }
 
-
     private static void openLibrarianDashboard() {
-        JOptionPane.showMessageDialog(null, "Opening Librarian Dashboard...");
-        // Implement the librarian dashboard
+        SwingUtilities.invokeLater(() -> {
+            new LibrarianPanel(connection);
+        });
     }
 
-    private static void openManagerDashboard() {
-        JOptionPane.showMessageDialog(null, "Opening Manager Dashboard...");
-        // Implement the manager dashboard
+    private static void openManagerDashboard(int managerId) {
+        SwingUtilities.invokeLater(() -> {
+            new ManagerPanel(connection, managerId);  // Pass managerId to the constructor
+        });
     }
+
 }
