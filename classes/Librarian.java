@@ -2,9 +2,9 @@ package classes;
 
 import java.util.ArrayList;
 
-public class Librarian extends staff {
+public class Librarian extends Staff {
     private ArrayList<LibraryItem> libraryItems = new ArrayList<>();
-    private ArrayList<customar> customers = new ArrayList<>();
+    private ArrayList<Customer> customers = new ArrayList<>();
 
     public void addBooks(LibraryItem book) {
         if (!libraryItems.contains(book)) {
@@ -32,7 +32,7 @@ public class Librarian extends staff {
         return libraryItems;
     }
 
-    public void addMember(customar Customer) {
+    public void addMember(Customer Customer) {
         if (!customers.contains(Customer)) {
             customers.add(Customer);
             System.out.println("Member added successfully.");
