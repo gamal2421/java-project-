@@ -1,18 +1,19 @@
 package classes;
 
 import java.util.Date;
-public class transaction {
+
+public class Transaction {
     int id_trans;
     int member_id;
     String item_id;
-    boolean return1;
+    boolean returnStatus;
     boolean borrow;
     Date start_date;
     Date end_date;
 
     public enum TransactionType {
-        RETURN1,
-        borrow;
+        RETURN,
+        BORROW
     }
 
     public void setId_trans(int id_trans) {
@@ -27,8 +28,8 @@ public class transaction {
         this.item_id = item_id;
     }
 
-    public void setReturn1(boolean return1) {
-        this.return1 = return1;
+    public void setReturnStatus(boolean returnStatus) {
+        this.returnStatus = returnStatus;
     }
 
     public void setBorrow(boolean borrow) {
@@ -62,13 +63,13 @@ public class transaction {
     public Date getStart_date() {
         return start_date;
     }
+
     public void displayAllDetails() {
         System.out.println("Transaction Details:");
         System.out.println("ID: " + id_trans);
         System.out.println("Member: " + member_id);
         System.out.println("Item: " + item_id);
-        System.out.println("Transaction Type: " + return1 );
-        System.out.println("Transaction Type: " + borrow );
+        System.out.println("Transaction Type: " + (borrow ? "Borrow" : returnStatus ? "Return" : "Unknown"));
         System.out.println("Start Date: " + start_date);
         System.out.println("End Date: " + end_date);
     }

@@ -2,7 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 
-public class Manager extends staff {
+public class Manager extends Staff {
     private ArrayList<Librarian> librarians = new ArrayList<>();
 
     public void addLibrarian(Librarian librarian) {

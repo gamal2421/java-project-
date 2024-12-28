@@ -2,7 +2,7 @@ package classes;
 
 import java.util.Date;
 
-public abstract class staff extends person{
+public abstract class Staff extends Person {
     int salary;
     Date hire_date;
 

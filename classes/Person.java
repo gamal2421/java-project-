@@ -1,11 +1,11 @@
 package classes;
 
-abstract class person {
-    String password ;
+public abstract class Person {
+    String password;
     int id;
     String name;
-    String gmail;
-    int phone;
+    String email;
+    String phone;
 
     public String getPassword() {
         return password;
@@ -31,19 +31,19 @@ abstract class person {
         return name;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public String getGmail() {
-        return gmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setGmail(String gmail) {
-        this.gmail = gmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 }

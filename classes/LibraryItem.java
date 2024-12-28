@@ -7,7 +7,6 @@ public class LibraryItem {
     private String isbn;
     private String author;
     private int numberOfCopies;
-    private boolean isAvailable;
 
     public int getId() {
         return id;
@@ -56,15 +55,12 @@ public class LibraryItem {
     public void setNumberOfCopies(int numberOfCopies) {
         this.numberOfCopies = numberOfCopies;
     }
+
     public void updateNumberOfCopies(int newCopies) {
         this.numberOfCopies = newCopies;
-        this.isAvailable = newCopies > 0;
-    }
-    public String isAvailable() {
-        return this.numberOfCopies > 0 ? "available" : "not available";
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public String getAvailabilityStatus() {
+        return this.numberOfCopies > 0 ? "Available" : "Not Available";
     }
 }
