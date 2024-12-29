@@ -19,7 +19,7 @@ CREATE TABLE LibraryItems (
     FOREIGN KEY (library_id) REFERENCES Libraries(library_id)
 );
 
--- Creating Customer Table
+-- Creating Customers Table
 CREATE TABLE Customers (
     customer_id SERIAL PRIMARY KEY,
     customer_name VARCHAR(50),

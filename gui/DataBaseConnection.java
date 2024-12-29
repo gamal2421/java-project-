@@ -165,10 +165,10 @@ public class DataBaseConnection {
                 Date start_date , Date end_date , int pending_days , String status
         ){
             if (this.connection == null) {
-                System.out.println("Cannot insert library item: Connection is null.");
+                System.out.println("Cannot insert Transaction: Connection is null.");
                 return;
             }
-            String sql= "insert into Transactions values(?,?,?,?,?,?,?,?)";
+            String sql= "insert into lib_Trans values(?,?,?,?,?,?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)){
                 statement.setInt(1,transaction_id);
                 statement.setInt(2,customer_id);
@@ -189,10 +189,72 @@ public class DataBaseConnection {
         }
         //////////////////////////
 
+        ///////////___________delete Library Customer____________////////////////
+        public void deleteCustomer(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library employee: Connection is null.");
+                return;
+            }
+            String sql= "delete from Customers where customer_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                    System.out.println("Customer deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting customer: " + e.getMessage());
+            }
+        }
 
-        /////////////_________select  library_________//////////////
+        ///////////___________delete Library Item__________////////////////
+        public void deleteLibItem(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library item: Connection is null.");
+                return;
+            }
+            String sql= "delete from libraryItem where item_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                System.out.println("item deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting item: " + e.getMessage());
+            }
+        }
+        //////////////_________delete Employee________/////////////
 
-        public void select_library(){
+        public void deleteLib_emp(int emp_id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library employee: Connection is null.");
+                return;
+            }
+            String sql= "delete from lib_emp where emp_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,emp_id);
+                statement.executeUpdate();
+                System.out.println("Employee deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting libEmp: " + e.getMessage());
+            }
+        }
+
+        ///////////___________delete Library Item__________////////////////
+        public void deleteTrans(int id){
+            if (this.connection == null) {
+                System.out.println("Cannot delete library item: Connection is null.");
+                return;
+            }
+            String sql= "delete from lib_Trans where transaction_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setInt(1,id);
+                statement.executeUpdate();
+                System.out.println("transaction deleted successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error deleting transaction: " + e.getMessage());
+            }
+        }
+        /////////////_________select  libraryItem _________//////////////
+
+        public void select_libraryItem(){
             if (this.connection == null){
                 System.out.println("can not select ");
             }
@@ -211,7 +273,118 @@ public class DataBaseConnection {
             } catch (SQLException e) {
                 System.out.println("Error select library item: " + e.getMessage());
             }
+        };
+        /////////////_________select  library_________//////////////
 
+        public void select_library(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from Libraries";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the Library table has columns "id", "name", "address", etc.
+                    int id = resultSet.getInt("library_id");
+                    String name = resultSet.getString("library_name");
+                    String address = resultSet.getString("library_address");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", Address: " + address);
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library : " + e.getMessage());
+            }
+        };
+
+        /////////////_________select  Customers_________//////////////
+
+        public void select_Customers(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from Customers";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the customers table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("customer_id");
+                    String name = resultSet.getString("customer_name");
+                    String email = resultSet.getString("email");
+                    String phone = resultSet.getString("phone");
+                    String pass = resultSet.getString("customer_password");
+                    Date member_ship_date = resultSet.getDate("member_ship_date");
+                    Date expire_date = resultSet.getDate("expire_date");
+                    int lib_id = resultSet.getInt("library_id");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", email: " + email+ ", phone: " + phone);
+                    System.out.println("password: " + pass + ", member_ship_date: " + member_ship_date + ", expire_date: " + expire_date+ ", lib_id: " + lib_id);
+
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library item: " + e.getMessage());
+            }
+
+        };
+        /////////////_________select  employees_________//////////////
+
+        public void select_employees(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from lib_emp";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the employees table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("emp_id");
+                    String name = resultSet.getString("emp_name");
+                    String email = resultSet.getString("email");
+                    String phone = resultSet.getString("phone");
+                    String pass = resultSet.getString("acc_password");
+                    int salary = resultSet.getInt("salary");
+                    Date hire_date = resultSet.getDate("hire_date");
+                    int manager_id = resultSet.getInt("manager_id");
+                    int lib_id = resultSet.getInt("library_id");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", Name: " + name + ", email: " + email+ ", phone: " + phone);
+                    System.out.println("password: " + pass + ", salary: " + salary + ", hire_date: " + hire_date+
+                            ", lib_id: " + lib_id+"manager_id: "+manager_id);
+
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error select library item: " + e.getMessage());
+            }
+
+        };
+
+        /////////////_________select  Transactions_________//////////////
+        public void select_Transactions(){
+            if (this.connection == null){
+                System.out.println("can not select ");
+            }
+            String select_sql = "select * from lib_Trans";
+            try (PreparedStatement statement = connection.prepareStatement(select_sql)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    // Assuming the transactions table has columns "id", "name", "email", etc.
+                    int id = resultSet.getInt("transaction_id");
+                    int customer_id = resultSet.getInt("customer_id");
+                    int itemId = resultSet.getInt("item_id");
+                    String trans_type = resultSet.getString("transaction_type");
+                    Date start_date = resultSet.getDate("start_date");
+                    Date end_date = resultSet.getDate("end_date");
+                    String status = resultSet.getString("status");
+                    int pending_days = resultSet.getInt("pending_days");
+                    // Print or process the data
+                    System.out.println("ID: " + id + ", customer: " + customer_id + ", itemId: " + itemId+ ", transaction_type: " + trans_type);
+                    System.out.println("start_date: " + start_date + ", end_date: " + end_date + ", pending days: " + pending_days+ ", status: " + status);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error select Transactions: " + e.getMessage());
+            }
         };
 
     }
