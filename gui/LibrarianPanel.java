@@ -1,5 +1,6 @@
 package gui;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,12 @@ public class LibrarianPanel extends JFrame {
     private JButton btnAddBook, btnDeleteBook, btnViewBooks, btnManageCustomers, btnAddCustomer, btnDeleteCustomer;
     private JList<String> listBooks, listCustomers;
     private DefaultListModel<String> booksListModel, customersListModel;
+    // Add the new button
+    private JButton btnViewTransactions;
+
+
+// Action listener for the button
+
 
     public LibrarianPanel(Connection connection) {
         this.connection = connection; // Set the database connection
@@ -20,6 +27,7 @@ public class LibrarianPanel extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+        btnViewTransactions = new JButton("View Transactions");
 
         // Librarian title
         JLabel lblTitle = new JLabel("Librarian Dashboard", SwingConstants.CENTER);
@@ -43,7 +51,7 @@ public class LibrarianPanel extends JFrame {
         operationsPanel.add(btnManageCustomers);
         operationsPanel.add(btnAddCustomer);
         operationsPanel.add(btnDeleteCustomer);
-
+        operationsPanel.add(btnViewTransactions);
         add(operationsPanel, BorderLayout.WEST);
 
         // Lists for displaying books and customers
@@ -69,7 +77,12 @@ public class LibrarianPanel extends JFrame {
                 addBook();
             }
         });
-
+        btnViewTransactions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewTransactions();
+            }
+        });
         btnDeleteBook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -300,6 +313,61 @@ public class LibrarianPanel extends JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Please select a customer to delete.");
         }
+    }
+
+    private void viewTransactions() {
+        // Define column headers for the table
+        String[] columnNames = {
+                "Transaction ID", "Customer Name", "Item Title", "Type",
+                "Start Date", "End Date", "Pending Days", "Status"
+        };
+
+        // Use a DefaultTableModel to dynamically add rows
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+        JTable transactionsTable = new JTable(tableModel);
+
+        try {
+            String sql = "SELECT t.transaction_id, c.customer_name, l.item_title, " +
+                    "t.transaction_type, t.start_date, t.end_date, t.pending_days, t.status " +
+                    "FROM lib_Trans t " +
+                    "JOIN Customers c ON t.customer_id = c.customer_id " +
+                    "JOIN LibraryItems l ON t.item_id = l.item_id";
+
+            try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    // Add rows to the table model
+                    tableModel.addRow(new Object[]{
+                            rs.getInt("transaction_id"),
+                            rs.getString("customer_name"),
+                            rs.getString("item_title"),
+                            rs.getString("transaction_type"),
+                            rs.getDate("start_date"),
+                            rs.getDate("end_date"),
+                            rs.getInt("pending_days"),
+                            rs.getString("status")
+                    });
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error retrieving transactions: " + e.getMessage());
+        }
+
+        // Set up the table inside a scrollable pane
+        transactionsTable.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(transactionsTable);
+
+        // Display the table in a dialog
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JLabel("Transactions", SwingConstants.CENTER), BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        // Show the dialog with the table
+        JDialog dialog = new JDialog(this, "Transactions", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(800, 400);
+        dialog.add(panel);
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
 
 }

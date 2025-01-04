@@ -144,9 +144,14 @@ public class CustomerPanel extends JFrame {
 
     private void returnBook() {
         try {
+            if (!lblActiveStatus.getText().equalsIgnoreCase("Active")) {
+                JOptionPane.showMessageDialog(this, "Your account is inactive. You cannot return items.", "Inactive Account", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             String selectedBook = listBorrowedBooks.getSelectedValue(); // Get selected book from JList
             if (selectedBook == null) {
-                JOptionPane.showMessageDialog(this, "Please select a item to return.", "No item Selected", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please select an item to return.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -172,7 +177,7 @@ public class CustomerPanel extends JFrame {
                 updateBookStatusStmt.setInt(1, itemId);
                 updateBookStatusStmt.executeUpdate();
 
-                JOptionPane.showMessageDialog(this, "item returned successfully!");
+                JOptionPane.showMessageDialog(this, "Item returned successfully!");
                 loadCustomerData();  // Reload the data after returning
             }
         } catch (Exception e) {
@@ -182,6 +187,11 @@ public class CustomerPanel extends JFrame {
 
     private void borrowBook() {
         try {
+            if (!lblActiveStatus.getText().equalsIgnoreCase("Active")) {
+                JOptionPane.showMessageDialog(this, "Your account is inactive. You cannot borrow items.", "Inactive Account", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             String selectedBook = (String) cbAvailableBooks.getSelectedItem();
             if (selectedBook != null) {
                 // Find the item_id of the selected book
@@ -207,7 +217,7 @@ public class CustomerPanel extends JFrame {
                     updateBookStatusStmt.setInt(1, itemId);
                     updateBookStatusStmt.executeUpdate();
 
-                    JOptionPane.showMessageDialog(this, "item borrowed successfully!");
+                    JOptionPane.showMessageDialog(this, "Item borrowed successfully!");
                     loadCustomerData();  // Reload the data after borrowing
                 }
             }
